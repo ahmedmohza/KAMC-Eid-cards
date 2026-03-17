@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eid Card Generator</title>
+  <style>
+    :root {
+      --bg1: #0f172a;
+      --bg2: #14532d;
+      --gold: #f4d35e;
+      --cream: #fffdf5;
+      --text: #13311d;
+      --shadow: 0 18px 45px rgba(0,0,0,.22);
+      --radius: 28px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(135deg, var(--bg1), var(--bg2));
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      color: white;
+    }
+
+    .app {
+      width: min(1180px, 100%);
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .panel {
+      background: rgba(255,255,255,.08);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 24px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .panel h1 {
+      margin: 0 0 10px;
+      font-size: 1.6rem;
+    }
+
+    .panel p {
+      margin: 0 0 18px;
+      line-height: 1.5;
+      color: rgba(255,255,255,.88);
+    }
+
+    label {
+      display: block;
+      font-size: .95rem;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: none;
+      outline: none;
+      font-size: 1rem;
+      margin-bottom: 14px;
+    }
+
+    .hint {
+      font-size: .9rem;
+      color: rgba(255,255,255,.74);
+      margin-top: 4px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px 18px;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #f7d76b, #d4a017);
+      color: #1f2937;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+      margin-top: 14px;
+      box-shadow: 0 10px 25px rgba(0,0,0,.18);
+    }
+
+    .preview-wrap {
+      display: grid;
+      place-items: center;
+    }
+
+    .card {
+      width: min(820px, 100%);
+      aspect-ratio: 16 / 9;
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--radius);
+      background:
+        radial-gradient(circle at top right, rgba(244,211,94,.35), transparent 28%),
+        radial-gradient(circle at bottom left, rgba(255,255,255,.16), transparent 24%),
+        linear-gradient(145deg, #fff9e6 0%, #fffdf5 45%, #f7f3df 100%);
+      box-shadow: var(--shadow);
+      border: 8px solid rgba(244,211,94,.34);
+      padding: 34px;
+      color: var(--text);
+    }
+
+    .pattern,
+    .pattern2 {
+      position: absolute;
+      inset: auto;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .pattern {
+      width: 240px;
+      height: 240px;
+      right: -65px;
+      top: -65px;
+      background: radial-gradient(circle, rgba(212,160,23,.16), rgba(212,160,23,0));
+    }
+
+    .pattern2 {
+      width: 260px;
+      height: 260px;
+      left: -90px;
+      bottom: -110px;
+      background: radial-gradient(circle, rgba(34,197,94,.12), rgba(34,197,94,0));
+    }
+
+    .logo {
+      width: 110px;
+      height: 110px;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto 18px;
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,.08));
+    }
+
+    .arabic {
+      direction: rtl;
+      text-align: center;
+      font-family: "Tahoma", "Arial", sans-serif;
+    }
+
+    .greeting {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      color: #996b00;
+      font-weight: 800;
+      letter-spacing: .5px;
+    }
+
+    .sub {
+      margin: 8px 0 18px;
+      font-size: clamp(1.05rem, 2vw, 1.5rem);
+      color: #215732;
+      font-weight: 700;
+    }
+
+    .name-box {
+      margin: 20px auto 0;
+      width: fit-content;
+      max-width: 90%;
+      padding: 14px 28px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(33,87,50,.96), rgba(20,83,45,.96));
+      color: white;
+      font-size: clamp(1.1rem, 2.3vw, 1.8rem);
+      font-weight: 800;
+      box-shadow: 0 10px 24px rgba(20,83,45,.18);
+    }
+
+    .footer {
+      position: absolute;
+      left: 34px;
+      right: 34px;
+      bottom: 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 16px;
+      color: #55715f;
+      font-size: .95rem;
+    }
+
+    .crescent {
+      position: absolute;
+      left: 38px;
+      top: 42px;
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      background: #d4a017;
+      box-shadow: inset -18px 0 0 #fff7dd;
+      opacity: .88;
+    }
+
+    .stars {
+      position: absolute;
+      right: 72px;
+      top: 78px;
+      color: #d4a017;
+      font-size: 1.6rem;
+      letter-spacing: 10px;
+    }
+
+    @media (max-width: 920px) {
+      .app { grid-template-columns: 1fr; }
+      .panel { order: 2; }
+      .preview-wrap { order: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="panel">
+      <h1>Eid Card Generator</h1>
+      <p>Create a simple Eid greeting card with your logo and your name shown on the card.</p>
+
+      <label for="nameInput">Enter your name</label>
+      <input id="nameInput" type="text" placeholder="Ahmed Alzahrani" value="Ahmed Alzahrani" />
+      <div class="hint">Your name updates live on the card.</div>
+
+      <button class="btn" id="downloadBtn">Download Card as PNG</button>
+    </div>
+
+    <div class="preview-wrap">
+      <div class="card" id="cardCapture">
+        <div class="pattern"></div>
+        <div class="pattern2"></div>
+        <div class="crescent"></div>
+        <div class="stars">✦ ✦ ✦</div>
+
+        <img class="logo" alt="Logo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA4AAAAMACAYAAAB8/s4iAAAACXBIWXMAAAsSAAALEgHS3X78AAAgAElEQVR4nO3de5RkZX3/8fd7e3ZmJzM7Q4ALmOxgLhBBrmFs0o0IuYjmV1P1A2Xk6KhtjWz0QyA8aAZKjSmCSxQ1mI2lAgqEFKVxQmXAAJUrFKyJrQjYxCBkRhjAsJ2RkdnZ2fn+0f1Vf1f7vW7m5u7q6v1+v9+v7/1m7q6urq6uq6u7u7u7u7r5m8s8AAABg4f1nAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGBhAQAAwM4BAACA7QEAAGDh/wNoYV9hPkn3/wAAAABJRU5ErkJggg==" />
+
+        <div class="arabic">
+          <h2 class="greeting">عيدكم مبارك</h2>
+          <div class="sub">تقبل الله طاعتكم وكل عام وأنتم بخير</div>
+          <div class="name-box" id="cardName">Ahmed Alzahrani</div>
+        </div>
+
+        <div class="footer">
+          <div>K.A.M.C. C. FOR OPERATION &amp; MAINTENANCE</div>
+          <div>Eid Greetings</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script>
+    const nameInput = document.getElementById('nameInput');
+    const cardName = document.getElementById('cardName');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const card = document.getElementById('cardCapture');
+
+    nameInput.addEventListener('input', () => {
+      const value = nameInput.value.trim();
+      cardName.textContent = value || 'Your Name';
+    });
+
+    downloadBtn.addEventListener('click', async () => {
+      const canvas = await html2canvas(card, { scale: 2, useCORS: true, backgroundColor: null });
+      const link = document.createElement('a');
+      link.download = 'eid-card.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    });
+  </script>
+</body>
+</html>
