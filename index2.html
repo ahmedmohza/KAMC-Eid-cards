@@ -95,6 +95,7 @@ document.getElementById("username").value;
 }
 
 function download(){
+
 let canvas=document.getElementById("canvas");
 let ctx=canvas.getContext("2d");
 
@@ -103,11 +104,15 @@ ctx.drawImage(bg,0,0,780,688);
 ctx.fillStyle="#555";
 ctx.textAlign="center";
 ctx.textBaseline="middle";
-ctx.font="70px Almarai";
+ctx.font="30px Almarai";
 
 let name=document.getElementById("username").value;
 
-ctx.fillText(name,390.0,550.4);
+/* نفس النسب المستخدمة في العرض */
+let x = 780 * 0.75;
+let y = 688 * 0.65;
+
+ctx.fillText(name,x,y);
 
 let link=document.createElement("a");
 link.download="eid-card.png";
