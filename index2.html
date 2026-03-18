@@ -122,6 +122,27 @@ link.href=canvas.toDataURL("image/png");
 link.click();
 }
 
+async function shareWhatsApp(){
+let canvas = generateImage();
+
+canvas.toBlob(async function(blob){
+
+const file = new File([blob], "eid-card.png", { type: "image/png" });
+
+if (navigator.share) {
+try {
+await navigator.share({
+files:[file],
+title:"كل عام وانتم بخير"
+});
+} catch(e) {
+alert("لم تتم المشاركة");
+}
+} else {
+alert("المشاركة المباشرة غير مدعومة في هذا المتصفح. سيتم تحميل الصورة.");
+downloadImage();
+}
+    
 </script>
 
 </body>
