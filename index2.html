@@ -82,7 +82,7 @@ canvas{display:none;}
 
 
 <button class="whatsapp" onclick="shareWhatsApp()">مشاركة واتساب</button>
-<button hidden="hidden" onclick="download()">تحميل الصورة</button>
+<button hidden="hidden" onclick="downloadImage()">تحميل الصورة</button>
 
 <canvas id="canvas" width="780" height="688"></canvas>
 
@@ -96,8 +96,8 @@ document.getElementById("name").innerText =
 document.getElementById("username").value;
 }
 
-function download(){
 
+function generateImage(){
 let canvas=document.getElementById("canvas");
 let ctx=canvas.getContext("2d");
 
@@ -116,11 +116,20 @@ let y = 688 * 0.65;
 
 ctx.fillText(name,x,y);
 
+return canvas;
+}
+
+function downloadImage(){
+let canvas = generateImage();
+
 let link=document.createElement("a");
 link.download="eid-card.png";
 link.href=canvas.toDataURL("image/png");
 link.click();
 }
+
+
+
 
 async function shareWhatsApp(){
 let canvas = generateImage();
